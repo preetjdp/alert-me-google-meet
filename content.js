@@ -177,17 +177,43 @@ try {
                       },
                     });
 
+                    const url = "https://maker.ifttt.com/trigger/google_meet_trigger/with/key/H4sEe45S_fef9byvVTxYW"
+
+                    const message = `${speaker} just said ${speech}`
+
                     // Send notif alert to background.js
                     chrome.runtime.sendMessage("", {
                       type: "notification",
                       options: {
                         title: "Alert — from Google Meet",
-                        message: `${speaker} just said ${speech}`,
+                        message,
                         iconUrl: base64Link,
                         type: "basic",
                       },
                     });
+
+                    const data = {
+                      value1: message
+                    };
+                    // const blob = new Blob([JSON.stringify(data)], { type: 'application/json; charset=UTF-8' });
+
+                    // alert(JSON.stringify(blob))
+                    // navigator.sendBeacon(url, blob);
+                    // fetch(url, {
+                    //   method: 'OPTIONS',
+                    //     headers: {
+                    //       'Accept': 'application/json',
+                    //       'Content-Type': 'application/json'
+                    //     },
+                    //   body: JSON.stringify(data)
+                    // })
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open("POST", url);
+                    xmlhttp.setRequestHeader("Content-Type", "application/json");
+                    xmlhttp.send(JSON.stringify(data));
                   });
+
+                  
 
                   // Reduces the number of mutations
                   // (silents the observer for 5 seconds)
